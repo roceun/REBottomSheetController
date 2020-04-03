@@ -1,0 +1,6 @@
+framework module REBottomSheetController {
+  umbrella header "REBottomSheetController-umbrella.h"
+
+  export *
+  module * { export * }
+}

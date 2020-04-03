@@ -1,0 +1,16 @@
+PODS:
+  - REBottomSheetController (0.1.0)
+
+DEPENDENCIES:
+  - REBottomSheetController (from `../`)
+
+EXTERNAL SOURCES:
+  REBottomSheetController:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  REBottomSheetController: f2b2fb4ac12663c578392924b88bfb760d550c22
+
+PODFILE CHECKSUM: aa735f41277181671a2a0d45a9081a7fb1d4780e
+
+COCOAPODS: 1.8.4

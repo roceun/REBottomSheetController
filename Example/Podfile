@@ -1,0 +1,13 @@
+use_frameworks!
+
+platform :ios, '9.0'
+
+target 'REBottomSheetController_Example' do
+  pod 'REBottomSheetController', :path => '../'
+
+  target 'REBottomSheetController_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
