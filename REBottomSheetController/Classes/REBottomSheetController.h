@@ -15,19 +15,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, weak, nullable) id<REBottomSheetDelegate> delegate;
 
-@property (nonatomic, assign) CGFloat topCornerRadius;
+@property (nonatomic, assign) CGFloat topCornerRadius; // default value is 12
 
-@property (nonatomic, assign) CGFloat minHeight;
-@property (nonatomic, assign) CGFloat maxHeight;
+@property (nonatomic, assign) CGFloat minHeight; // default value is 0
+@property (nonatomic, assign) CGFloat maxHeight; // default value is half of screen
 
-@property (nonatomic, assign) CGFloat bounceAnimationHeight;
-@property (nonatomic, assign) CGFloat animationDuration;
+@property (nonatomic, assign) CGFloat bounceAnimationHeight; // default value is 20
+@property (nonatomic, assign) CGFloat animationDuration; // default value is 0.3
 
-@property (nonatomic, strong, nullable) UIColor *dimmedColor;
-@property (nonatomic, assign) CGFloat dimmedAlphaForMinHeight;
-@property (nonatomic, assign) CGFloat dimmedAlphaForMaxHeight;
+@property (nonatomic, strong, nullable) UIColor *dimmedColor; // default value is nil
+@property (nonatomic, assign) CGFloat dimmedAlphaForMinHeight; // default value is 0
+@property (nonatomic, assign) CGFloat dimmedAlphaForMaxHeight; // default value is 1
 
-@property (nonatomic, assign) BOOL shoudPanGesture;
+@property (nonatomic, assign) BOOL shoudPanGesture; // default value is YES
 
 - (void)moveToMinHeight;
 - (void)moveToMaxHeight;

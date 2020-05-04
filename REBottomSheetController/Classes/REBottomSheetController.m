@@ -39,10 +39,10 @@
     self.topCornerRadius = 12;
     
     self.minHeight = 0;
-    self.maxHeight = [UIScreen mainScreen].bounds.size.height;
+    self.maxHeight = [UIScreen mainScreen].bounds.size.height / 2;
     
     self.bounceAnimationHeight = 20;
-    self.animationDuration = 0.2f;
+    self.animationDuration = 0.3f;
     
     self.dimmedColor = nil;
     self.dimmedAlphaForMinHeight = 0;
@@ -87,11 +87,12 @@
 	[self initSubviews];
 	
 	[self setContentViewFrameWithOffsetY:_screenHeight];
+	
     if (_minHeight > 0) {
-        [self animateView:_screenHeight - _minHeight];
+        [self animateViewWithHeight:_minHeight];
     }
     else {
-        [self animateView:_screenHeight - _maxHeight];
+        [self animateViewWithHeight:_maxHeight];
     }
 	
 	UIGestureRecognizer * const recognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureRecognizer:)];
@@ -107,13 +108,12 @@
 {
 	self.view.translatesAutoresizingMaskIntoConstraints = NO;
 	
-	self.topConstraint = [self.view.topAnchor constraintEqualToAnchor:self.view.superview.topAnchor];
-	_topConstraint.active = YES;
-	
+	self.topConstraint = [self.view.topAnchor constraintEqualToAnchor:self.view.superview.topAnchor constant:_screenHeight];
 	self.heightConstraint = [self.view.heightAnchor constraintEqualToConstant:(_minHeight > 0 ? _minHeight : _maxHeight)];
-	_heightConstraint.active = YES;
 	
 	[NSLayoutConstraint activateConstraints:@[
+		_topConstraint,
+		_heightConstraint,
 		[self.view.leftAnchor constraintEqualToAnchor:self.view.superview.leftAnchor],
 		[self.view.rightAnchor constraintEqualToAnchor:self.view.superview.rightAnchor]
 	]];
@@ -130,6 +130,10 @@
         topContentView = [_delegate REBottomSheetControllerGetTopContentView:self];
         self.topContentViewHeight = MAX(0, [_delegate REBottonSheetViewControllerGetTopContentViewHeight:self]);
     }
+	else {
+		NSLog(@"Required methods! REBottomSheetControllerGetTopContentView, REBottonSheetViewControllerGetTopContentViewHeight");
+		return;
+	}
     [self.view addSubview:topContentView];
     self.topContentView = topContentView;
     
@@ -239,19 +243,21 @@
     }
 }
 
-- (void)animateView:(CGFloat)offsetY
+- (void)animateViewWithHeight:(CGFloat)height
 {
+	const CGFloat offsetY = _screenHeight - height;
     if (_topConstraint.constant == offsetY) {
         return;
     }
     
     _bottomScrollView.scrollEnabled = (offsetY == _screenHeight - _maxHeight);
+	
     const BOOL shouldAnimation = _animationDuration > 0;
     
     CGFloat bounceOffsetY = offsetY;
     if (shouldAnimation &&
-        _topConstraint.constant > _screenHeight - _maxHeight &&
-        _topConstraint.constant < _screenHeight - _minHeight) {
+        _topConstraint.constant >= _screenHeight - _maxHeight &&
+        _topConstraint.constant <= _screenHeight - _minHeight) {
         if (_topConstraint.constant < offsetY) { // scroll down
             bounceOffsetY += _bounceAnimationHeight;
         }
@@ -267,7 +273,8 @@
             return;
         }
         
-        [strongSelf setContentViewFrameWithOffsetY:bounceOffsetY];
+		[strongSelf setContentViewFrameWithOffsetY:bounceOffsetY];
+		[self.view.superview layoutIfNeeded];
     };
     
     void (^completion)(BOOL) = ^(BOOL finished) {
@@ -284,7 +291,7 @@
         }
         
         if (shouldAnimation && bounceOffsetY != offsetY) {
-            [strongSelf animateView:offsetY];
+            [strongSelf animateViewWithHeight:strongSelf.screenHeight - offsetY];
 		}
 		
 		if (!strongSelf.bottomScrollView.scrollEnabled) {
@@ -292,10 +299,9 @@
 		}
 	};
     
+	[self.view.superview layoutIfNeeded];
     if (shouldAnimation) {
         [UIView animateWithDuration:_animationDuration
-                              delay:0
-                            options:UIViewAnimationOptionCurveEaseOut
                          animations:animations
                          completion:completion];
     }
@@ -314,24 +320,18 @@
     }
     
     const BOOL isScrollDown = [recognizer velocityInView:self.view].y > 0;
-    CGFloat offsetY = _topConstraint.constant + [recognizer translationInView:self.view].y;
-    
     switch (recognizer.state) {
         case UIGestureRecognizerStateChanged:
+		{
+			CGFloat offsetY = _topConstraint.constant + [recognizer translationInView:self.view].y;
             offsetY = MAX(offsetY, _screenHeight - _maxHeight - _bounceAnimationHeight);
             
             [self setContentViewFrameWithOffsetY:offsetY];
             [recognizer setTranslation:CGPointZero inView:self.view];
             break;
-            
+		}
         case UIGestureRecognizerStateEnded:
-            if (isScrollDown) {
-                offsetY = _screenHeight - _minHeight;
-            } else {
-                offsetY = _screenHeight - _maxHeight;
-            }
-            
-            [self animateView:offsetY];
+			[self animateViewWithHeight:(isScrollDown ? _minHeight : _maxHeight)];
             break;
             
         default:
@@ -351,8 +351,6 @@
     const BOOL shouldDragViewDown = isScrollDown && _bottomScrollView.contentOffset.y <= 0;
     const BOOL shouldDragViewUp = !isScrollDown && !isMaxHeight;
     
-    CGFloat offsetY = _topConstraint.constant + [recognizer translationInView:self.view].y;
-    
     switch (recognizer.state) {
         case UIGestureRecognizerStateBegan:
             self.shouldDragView = shouldDragViewDown || shouldDragViewUp;
@@ -366,6 +364,7 @@
             
         case UIGestureRecognizerStateChanged:
             if (_shouldDragView) {
+				CGFloat offsetY = _topConstraint.constant + [recognizer translationInView:self.view].y;
                 offsetY = MAX(offsetY, _screenHeight - _maxHeight - _bounceAnimationHeight);
                 
                 [self setContentViewFrameWithOffsetY:offsetY];
@@ -375,14 +374,11 @@
             
         case UIGestureRecognizerStateEnded:
             if (_shouldDragView) {
-                if (isScrollDown) {
-                    offsetY = _screenHeight - _minHeight;
-                } else {
+                if (!isScrollDown) {
                     _bottomScrollView.bounces = YES;
-                    offsetY = _screenHeight - _maxHeight;
                 }
                 
-                [self animateView:offsetY];
+				[self animateViewWithHeight:(isScrollDown ? _minHeight : _maxHeight)];
             }
             break;
             
@@ -444,12 +440,12 @@
 
 - (void)moveToMinHeight
 {
-    [self animateView:_minHeight];
+    [self animateViewWithHeight:_minHeight];
 }
 
 - (void)moveToMaxHeight
 {
-    [self animateView:_maxHeight];
+    [self animateViewWithHeight:_maxHeight];
 }
 
 @end
