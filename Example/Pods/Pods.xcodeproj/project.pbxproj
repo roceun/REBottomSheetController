@@ -7,17 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0B9658D0C7F7478F3A927E5A56566B14 /* REBottomSheetController.h in Headers */ = {isa = PBXBuildFile; fileRef = F9E9EAA710A6BB3162EB5FB260AD7BB5 /* REBottomSheetController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		1D1F215869D5B146A9DF891248C310A4 /* REBottomSheetController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54373A07A7C303776FDE7098C99BE7D0 /* REBottomSheetController.m */; };
-		32BFF444370BA92E807943DB98D75F1E /* REBottomSheetController-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = CED99960B5DA0CA6F6381CD4AC9673D6 /* REBottomSheetController-dummy.m */; };
+		60FB87BE2A3E7B80CAD86164D05D924D /* REBottomSheetController-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A946ED69C4CD541F89D5501E7A5F172 /* REBottomSheetController-dummy.m */; };
 		74D5C1A4FC45F8EE2BB9CE0847DD4566 /* Pods-REBottomSheetController_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B95890AD3CFABE89A7EF190FC94BB0F /* Pods-REBottomSheetController_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8DCD4A4693D38876BDE1D1D8BA9A2647 /* Pods-REBottomSheetController_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 4910140C90859918F6469C81777DB7B3 /* Pods-REBottomSheetController_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		945EC9EA88B63DB75477220638CE1D4B /* Pods-REBottomSheetController_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1158F3D51259A1269B12E12503436112 /* Pods-REBottomSheetController_Example-dummy.m */; };
-		ADBB777E8F919B4FCCB0E377A5440FA3 /* REBottomSheetController-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 516794BC45BF1194D129FDFB5FB36172 /* REBottomSheetController-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C0477BCEA8C71F9966139041EC47D453 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
+		C07784E5C8930CA6E518BE0A33D77742 /* REBottomSheetController-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = ECD0BF226DDD8A70E6E6CBCE53146D93 /* REBottomSheetController-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D85FD536920ED3CEEDFACD63AFACA520 /* Pods-REBottomSheetController_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = DF87A84D98955455702D0A133053B91C /* Pods-REBottomSheetController_Tests-dummy.m */; };
 		E6527826AE20EBE627C7D1E8D08E687C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
+		F1EA7A7A52E3509D4890C6507C157BC7 /* REBottomSheetController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96518BF27687E5B6A178A154F30D6EFE /* REBottomSheetController.m */; };
 		F25C43DE4FF4EDE9C08D448A305AE3F5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
+		F8AAA01E5136FAF7DAC34576BF0D0551 /* REBottomSheetController.h in Headers */ = {isa = PBXBuildFile; fileRef = 27511CB734AA714595AAC67FFAF6AA53 /* REBottomSheetController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,37 +39,37 @@
 
 /* Begin PBXFileReference section */
 		1158F3D51259A1269B12E12503436112 /* Pods-REBottomSheetController_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-REBottomSheetController_Example-dummy.m"; sourceTree = "<group>"; };
-		14D638D843480EE1D5CA46F1FD003F85 /* Pods_REBottomSheetController_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_REBottomSheetController_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		2BCFF8C3C21E26CF42523DF481744D36 /* REBottomSheetController.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = REBottomSheetController.xcconfig; sourceTree = "<group>"; };
+		14D638D843480EE1D5CA46F1FD003F85 /* Pods_REBottomSheetController_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_REBottomSheetController_Example.framework; path = "Pods-REBottomSheetController_Example.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		27511CB734AA714595AAC67FFAF6AA53 /* REBottomSheetController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = REBottomSheetController.h; path = REBottomSheetController/Classes/REBottomSheetController.h; sourceTree = "<group>"; };
 		2F1446BF9AEAE26ACC74FD3275C9F593 /* Pods-REBottomSheetController_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-REBottomSheetController_Example-acknowledgements.plist"; sourceTree = "<group>"; };
 		3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		3E7DBB73D3EF9CF4BA50E5E16743871E /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		4910140C90859918F6469C81777DB7B3 /* Pods-REBottomSheetController_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-REBottomSheetController_Example-umbrella.h"; sourceTree = "<group>"; };
-		4E83AC8AEE933F05670DC127DF94A69B /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		516794BC45BF1194D129FDFB5FB36172 /* REBottomSheetController-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "REBottomSheetController-umbrella.h"; sourceTree = "<group>"; };
-		54373A07A7C303776FDE7098C99BE7D0 /* REBottomSheetController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = REBottomSheetController.m; path = REBottomSheetController/Classes/REBottomSheetController.m; sourceTree = "<group>"; };
-		54A81B517596F5654D2D2B62C7938F4D /* REBottomSheetController.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = REBottomSheetController.modulemap; sourceTree = "<group>"; };
-		5A6D29B84157E42D8838DC7BAED42CAF /* Pods_REBottomSheetController_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_REBottomSheetController_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5A6D29B84157E42D8838DC7BAED42CAF /* Pods_REBottomSheetController_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_REBottomSheetController_Tests.framework; path = "Pods-REBottomSheetController_Tests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		601051163F49648BFC1EFAFE9A9EF91E /* Pods-REBottomSheetController_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-REBottomSheetController_Example.release.xcconfig"; sourceTree = "<group>"; };
+		6A946ED69C4CD541F89D5501E7A5F172 /* REBottomSheetController-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "REBottomSheetController-dummy.m"; sourceTree = "<group>"; };
 		6B95890AD3CFABE89A7EF190FC94BB0F /* Pods-REBottomSheetController_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-REBottomSheetController_Tests-umbrella.h"; sourceTree = "<group>"; };
 		6D392A89CC1B4C4430A2B72ECE543AE1 /* Pods-REBottomSheetController_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-REBottomSheetController_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		708D88122B66DA41570119CA2F0788AF /* Pods-REBottomSheetController_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-REBottomSheetController_Tests.modulemap"; sourceTree = "<group>"; };
+		71D76ED7AA54174A48DE802F60673769 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
 		7397E9FB858BFD629412CF0497A5D528 /* Pods-REBottomSheetController_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-REBottomSheetController_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		7C13AC41A3ADEEBFE237BABF96FFC2A3 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
 		82925663027D87CABB5DA3EC2B5B2BE1 /* Pods-REBottomSheetController_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-REBottomSheetController_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
-		8C69B21BDBD2B97F282C92C5DD3DE9A5 /* REBottomSheetController.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = REBottomSheetController.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		93B701B4B7B87F9992DCC64F919CFB53 /* REBottomSheetController.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = REBottomSheetController.modulemap; sourceTree = "<group>"; };
+		93CBFBE155ECA9C85C42412AB3185178 /* REBottomSheetController.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = REBottomSheetController.xcconfig; sourceTree = "<group>"; };
+		96518BF27687E5B6A178A154F30D6EFE /* REBottomSheetController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = REBottomSheetController.m; path = REBottomSheetController/Classes/REBottomSheetController.m; sourceTree = "<group>"; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		A98BE896482EDCF1DAE02516D19B3FBA /* REBottomSheetController.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = REBottomSheetController.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		B71ECC5F7154471CEA30E3262ECEB7AD /* Pods-REBottomSheetController_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-REBottomSheetController_Example.debug.xcconfig"; sourceTree = "<group>"; };
-		CED99960B5DA0CA6F6381CD4AC9673D6 /* REBottomSheetController-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "REBottomSheetController-dummy.m"; sourceTree = "<group>"; };
 		CF55D9A2D202E83045A23C21A3BF9428 /* Pods-REBottomSheetController_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-REBottomSheetController_Example-frameworks.sh"; sourceTree = "<group>"; };
 		D06FBFA794F58E0112ACF31C44CC31A2 /* Pods-REBottomSheetController_Example-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-REBottomSheetController_Example-Info.plist"; sourceTree = "<group>"; };
+		D152B15FE5EC92FAD54F27553C48364E /* REBottomSheetController-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "REBottomSheetController-Info.plist"; sourceTree = "<group>"; };
 		D61E40F2C6BCDEF466E67FD6091598DC /* Pods-REBottomSheetController_Tests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-REBottomSheetController_Tests-Info.plist"; sourceTree = "<group>"; };
-		D848C94402DB0A6234AB9B14C472755E /* REBottomSheetController-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "REBottomSheetController-Info.plist"; sourceTree = "<group>"; };
+		D6CC56012FCA0DFD5BFFB08D9DB6E3D6 /* REBottomSheetController-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "REBottomSheetController-prefix.pch"; sourceTree = "<group>"; };
 		DF87A84D98955455702D0A133053B91C /* Pods-REBottomSheetController_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-REBottomSheetController_Tests-dummy.m"; sourceTree = "<group>"; };
-		E08CC9CCE4BCF1BE4B3FF072D8802A58 /* REBottomSheetController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = REBottomSheetController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E08CC9CCE4BCF1BE4B3FF072D8802A58 /* REBottomSheetController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = REBottomSheetController.framework; path = REBottomSheetController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3B781CBAB37E4725215C6871002F4F5 /* Pods-REBottomSheetController_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-REBottomSheetController_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
-		F1424BE76BE4921193C29D713A9826C9 /* REBottomSheetController-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "REBottomSheetController-prefix.pch"; sourceTree = "<group>"; };
+		ECD0BF226DDD8A70E6E6CBCE53146D93 /* REBottomSheetController-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "REBottomSheetController-umbrella.h"; sourceTree = "<group>"; };
 		F1818EAB5670FBE50014C48CDD738F53 /* Pods-REBottomSheetController_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-REBottomSheetController_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
-		F9E9EAA710A6BB3162EB5FB260AD7BB5 /* REBottomSheetController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = REBottomSheetController.h; path = REBottomSheetController/Classes/REBottomSheetController.h; sourceTree = "<group>"; };
 		FA1442E3C6EBFD8FDDF09E686C1D937A /* Pods-REBottomSheetController_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-REBottomSheetController_Example.modulemap"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -101,20 +101,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		024F08C3901984891D4A7985DBDB8054 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				54A81B517596F5654D2D2B62C7938F4D /* REBottomSheetController.modulemap */,
-				2BCFF8C3C21E26CF42523DF481744D36 /* REBottomSheetController.xcconfig */,
-				CED99960B5DA0CA6F6381CD4AC9673D6 /* REBottomSheetController-dummy.m */,
-				D848C94402DB0A6234AB9B14C472755E /* REBottomSheetController-Info.plist */,
-				F1424BE76BE4921193C29D713A9826C9 /* REBottomSheetController-prefix.pch */,
-				516794BC45BF1194D129FDFB5FB36172 /* REBottomSheetController-umbrella.h */,
-			);
-			name = "Support Files";
-			path = "Example/Pods/Target Support Files/REBottomSheetController";
-			sourceTree = "<group>";
-		};
 		04F8236D7C020ED388530FDC1B77F68C /* Pods-REBottomSheetController_Example */ = {
 			isa = PBXGroup;
 			children = (
@@ -141,23 +127,13 @@
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
-		57A4B43BA6791FA3EBCA1CAB1030726B /* Pod */ = {
+		818209A59D767637E7A4915685225F8A /* REBottomSheetController */ = {
 			isa = PBXGroup;
 			children = (
-				3E7DBB73D3EF9CF4BA50E5E16743871E /* LICENSE */,
-				4E83AC8AEE933F05670DC127DF94A69B /* README.md */,
-				8C69B21BDBD2B97F282C92C5DD3DE9A5 /* REBottomSheetController.podspec */,
-			);
-			name = Pod;
-			sourceTree = "<group>";
-		};
-		8A84C799C15873176F694C8134617B48 /* REBottomSheetController */ = {
-			isa = PBXGroup;
-			children = (
-				F9E9EAA710A6BB3162EB5FB260AD7BB5 /* REBottomSheetController.h */,
-				54373A07A7C303776FDE7098C99BE7D0 /* REBottomSheetController.m */,
-				57A4B43BA6791FA3EBCA1CAB1030726B /* Pod */,
-				024F08C3901984891D4A7985DBDB8054 /* Support Files */,
+				27511CB734AA714595AAC67FFAF6AA53 /* REBottomSheetController.h */,
+				96518BF27687E5B6A178A154F30D6EFE /* REBottomSheetController.m */,
+				F4681BF37496C71566B08DA5708C63EF /* Pod */,
+				F24A9026AC6C2F1CE2303370CE7F60A7 /* Support Files */,
 			);
 			name = REBottomSheetController;
 			path = ../..;
@@ -219,9 +195,33 @@
 		D684269E2448D4FCB7EC051EB8BD189E /* Development Pods */ = {
 			isa = PBXGroup;
 			children = (
-				8A84C799C15873176F694C8134617B48 /* REBottomSheetController */,
+				818209A59D767637E7A4915685225F8A /* REBottomSheetController */,
 			);
 			name = "Development Pods";
+			sourceTree = "<group>";
+		};
+		F24A9026AC6C2F1CE2303370CE7F60A7 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				93B701B4B7B87F9992DCC64F919CFB53 /* REBottomSheetController.modulemap */,
+				93CBFBE155ECA9C85C42412AB3185178 /* REBottomSheetController.xcconfig */,
+				6A946ED69C4CD541F89D5501E7A5F172 /* REBottomSheetController-dummy.m */,
+				D152B15FE5EC92FAD54F27553C48364E /* REBottomSheetController-Info.plist */,
+				D6CC56012FCA0DFD5BFFB08D9DB6E3D6 /* REBottomSheetController-prefix.pch */,
+				ECD0BF226DDD8A70E6E6CBCE53146D93 /* REBottomSheetController-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "Example/Pods/Target Support Files/REBottomSheetController";
+			sourceTree = "<group>";
+		};
+		F4681BF37496C71566B08DA5708C63EF /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				71D76ED7AA54174A48DE802F60673769 /* LICENSE */,
+				7C13AC41A3ADEEBFE237BABF96FFC2A3 /* README.md */,
+				A98BE896482EDCF1DAE02516D19B3FBA /* REBottomSheetController.podspec */,
+			);
+			name = Pod;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -235,20 +235,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		32349013B1C7CF34FB5141A4FA9920FA /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				ADBB777E8F919B4FCCB0E377A5440FA3 /* REBottomSheetController-umbrella.h in Headers */,
-				0B9658D0C7F7478F3A927E5A56566B14 /* REBottomSheetController.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		EB9D5715611B017F1B23CDA2929339D4 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				8DCD4A4693D38876BDE1D1D8BA9A2647 /* Pods-REBottomSheetController_Example-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FBF01DC4959DA1A15F51F2F84410E8E8 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C07784E5C8930CA6E518BE0A33D77742 /* REBottomSheetController-umbrella.h in Headers */,
+				F8AAA01E5136FAF7DAC34576BF0D0551 /* REBottomSheetController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,8 +297,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 572E6F3A9F7431248CE94371D96F7C33 /* Build configuration list for PBXNativeTarget "REBottomSheetController" */;
 			buildPhases = (
-				32349013B1C7CF34FB5141A4FA9920FA /* Headers */,
-				11C686D230D4C6CFC38B65A7F3D2894A /* Sources */,
+				FBF01DC4959DA1A15F51F2F84410E8E8 /* Headers */,
+				2249DFDA40AFCF1020E20BAA6F7318FE /* Sources */,
 				8FE58FC9E1688DC427CD2852D0020EDA /* Frameworks */,
 				FFE0F2D82B6AE0ED76967D940650F9A9 /* Resources */,
 			);
@@ -364,12 +364,12 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		11C686D230D4C6CFC38B65A7F3D2894A /* Sources */ = {
+		2249DFDA40AFCF1020E20BAA6F7318FE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				32BFF444370BA92E807943DB98D75F1E /* REBottomSheetController-dummy.m in Sources */,
-				1D1F215869D5B146A9DF891248C310A4 /* REBottomSheetController.m in Sources */,
+				60FB87BE2A3E7B80CAD86164D05D924D /* REBottomSheetController-dummy.m in Sources */,
+				F1EA7A7A52E3509D4890C6507C157BC7 /* REBottomSheetController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -475,7 +475,7 @@
 		};
 		7C03A9A94D19F9B55D03558C0CF7B1A5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2BCFF8C3C21E26CF42523DF481744D36 /* REBottomSheetController.xcconfig */;
+			baseConfigurationReference = 93CBFBE155ECA9C85C42412AB3185178 /* REBottomSheetController.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -592,7 +592,8 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				SYMROOT = "${SRCROOT}/../build";
 			};
@@ -698,7 +699,7 @@
 		};
 		A0704FDF35C9365C7D9EC800F231854A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2BCFF8C3C21E26CF42523DF481744D36 /* REBottomSheetController.xcconfig */;
+			baseConfigurationReference = 93CBFBE155ECA9C85C42412AB3185178 /* REBottomSheetController.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";

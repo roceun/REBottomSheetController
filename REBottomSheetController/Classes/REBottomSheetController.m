@@ -99,6 +99,18 @@
     [self.view addGestureRecognizer:recognizer];
 }
 
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+	self.screenHeight = size.height;
+	[self animateViewWithHeight:size.width - _topConstraint.constant];
+	[coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> _Nonnull context) {
+		[self.view setNeedsLayout];
+	} completion:^(id<UIViewControllerTransitionCoordinatorContext> _Nonnull context){
+	}];
+}
+
 - (void)viewWillLayoutSubviews
 {
     [self roundRectWithView:_topContentView];

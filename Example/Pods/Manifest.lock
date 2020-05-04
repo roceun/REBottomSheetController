@@ -1,5 +1,5 @@
 PODS:
-  - REBottomSheetController (0.1.0)
+  - REBottomSheetController (0.3.0)
 
 DEPENDENCIES:
   - REBottomSheetController (from `../`)
@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  REBottomSheetController: f2b2fb4ac12663c578392924b88bfb760d550c22
+  REBottomSheetController: 9e3082a1a10b8a6074d439a82d4ed1f71770a918
 
 PODFILE CHECKSUM: aa735f41277181671a2a0d45a9081a7fb1d4780e
 
