@@ -21,6 +21,8 @@
 @property (nonatomic, strong) NSLayoutConstraint *topConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *heightConstraint;
 
+@property (nonatomic, strong) NSLayoutConstraint *bottomScrollViewConstraint;
+
 @property (nonatomic, assign) CGFloat topContentViewHeight;
 
 @end
@@ -36,6 +38,13 @@
 
 - (void)initialize
 {
+	self.screenHeight = [UIScreen mainScreen].bounds.size.height;
+    self.safeAreaBottom = 0;
+    if (@available(iOS 11.0, *)) {
+        UIWindow *window = UIApplication.sharedApplication.keyWindow;
+        self.safeAreaBottom = window.safeAreaInsets.bottom;
+    }
+	
     self.topCornerRadius = 12;
     
     self.minHeight = 0;
@@ -49,13 +58,6 @@
     self.dimmedAlphaForMaxHeight = 1;
     
     self.shoudPanGesture = YES;
-    
-    self.screenHeight = [UIScreen mainScreen].bounds.size.height;
-    self.safeAreaBottom = 0;
-    if (@available(iOS 11.0, *)) {
-        UIWindow *window = UIApplication.sharedApplication.keyWindow;
-        self.safeAreaBottom = window.safeAreaInsets.bottom;
-    }
 }
 
 - (void)dealloc
@@ -69,6 +71,11 @@
     self.topContentView = nil;
     self.bottomScrollView = nil;
     self.dimmedView = nil;
+	
+	self.topConstraint = nil;
+	self.heightConstraint = nil;
+	
+	self.bottomScrollViewConstraint = nil;
 }
 
 - (void)viewDidLoad {
@@ -104,7 +111,7 @@
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 
 	self.screenHeight = size.height;
-	[self animateViewWithHeight:size.width - _topConstraint.constant];
+	[self setContentViewFrameWithOffsetY:_screenHeight - size.width + _topConstraint.constant];
 	[coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> _Nonnull context) {
 		[self.view setNeedsLayout];
 	} completion:^(id<UIViewControllerTransitionCoordinatorContext> _Nonnull context){
@@ -121,7 +128,7 @@
 	self.view.translatesAutoresizingMaskIntoConstraints = NO;
 	
 	self.topConstraint = [self.view.topAnchor constraintEqualToAnchor:self.view.superview.topAnchor constant:_screenHeight];
-	self.heightConstraint = [self.view.heightAnchor constraintEqualToConstant:(_minHeight > 0 ? _minHeight : _maxHeight)];
+	self.heightConstraint = [self.view.heightAnchor constraintEqualToConstant:_maxHeight + _bounceAnimationHeight];
 	
 	[NSLayoutConstraint activateConstraints:@[
 		_topConstraint,
@@ -134,6 +141,9 @@
 - (void)initSubviews
 {
     NSMutableArray * const constraints = [NSMutableArray new];
+	
+	UIView * const backColorView = [UIView new];
+	[self.view addSubview:backColorView];
     
     self.topContentViewHeight = 0;
     UIView *topContentView = nil;
@@ -164,23 +174,35 @@
     
     if (bottomScrollView) {
         bottomScrollView.scrollEnabled = NO;
-        bottomScrollView.contentInset = UIEdgeInsetsMake(0, 0, _bounceAnimationHeight + _safeAreaBottom, 0);
+        bottomScrollView.contentInset = UIEdgeInsetsMake(0, 0, _safeAreaBottom, 0);
         [self.view addSubview:bottomScrollView];
         self.bottomScrollView = bottomScrollView;
         
         bottomScrollView.translatesAutoresizingMaskIntoConstraints = NO;
+		
+		self.bottomScrollViewConstraint = [bottomScrollView.heightAnchor constraintEqualToConstant:(_minHeight > 0 ? _minHeight : _maxHeight) - _topContentViewHeight];
         [constraints addObjectsFromArray:@[
             [bottomScrollView.topAnchor constraintEqualToAnchor:topContentView.bottomAnchor],
             [bottomScrollView.leftAnchor constraintEqualToAnchor:bottomScrollView.superview.leftAnchor],
             [bottomScrollView.rightAnchor constraintEqualToAnchor:bottomScrollView.superview.rightAnchor],
-            [bottomScrollView.bottomAnchor constraintEqualToAnchor:bottomScrollView.superview.bottomAnchor]
+			_bottomScrollViewConstraint
         ]];
         
         [bottomScrollView.panGestureRecognizer addTarget:self action:@selector(panGestureRecognizerForScrollView:)];
     }
+	
+	backColorView.backgroundColor = (bottomScrollView ?: topContentView).backgroundColor;
+	backColorView.translatesAutoresizingMaskIntoConstraints = NO;
+	[constraints addObjectsFromArray:@[
+		[backColorView.topAnchor constraintEqualToAnchor:(bottomScrollView ?: topContentView).bottomAnchor constant:-1],
+		[backColorView.leftAnchor constraintEqualToAnchor:backColorView.superview.leftAnchor],
+		[backColorView.rightAnchor constraintEqualToAnchor:backColorView.superview.rightAnchor],
+		[backColorView.bottomAnchor constraintEqualToAnchor:backColorView.superview.bottomAnchor]
+	]];
     
     [NSLayoutConstraint activateConstraints:constraints];
 	
+	[topContentView layoutIfNeeded];
 	[self.view layoutIfNeeded];
 }
 
@@ -238,7 +260,11 @@
     [self setDimmedViewColorWithOffsetY:offsetY];
     
 	_topConstraint.constant = offsetY;
-	_heightConstraint.constant = MAX(MAX(_screenHeight - offsetY, _minHeight), _topContentViewHeight);
+	_heightConstraint.constant = _maxHeight + _bounceAnimationHeight;
+	
+	_bottomScrollViewConstraint.constant = MAX(_screenHeight - offsetY, (_minHeight > 0 ? _minHeight : _maxHeight)) - _topContentViewHeight;
+	
+	[self.view updateConstraintsIfNeeded];
 }
 
 - (void)didChangedMinHeight
@@ -267,7 +293,7 @@
     const BOOL shouldAnimation = _animationDuration > 0;
     
     CGFloat bounceOffsetY = offsetY;
-    if (shouldAnimation &&
+    if (shouldAnimation && _bounceAnimationHeight > 0 &&
         _topConstraint.constant >= _screenHeight - _maxHeight &&
         _topConstraint.constant <= _screenHeight - _minHeight) {
         if (_topConstraint.constant < offsetY) { // scroll down
@@ -286,7 +312,7 @@
         }
         
 		[strongSelf setContentViewFrameWithOffsetY:bounceOffsetY];
-		[self.view.superview layoutIfNeeded];
+		[strongSelf.view.superview layoutIfNeeded];
     };
     
     void (^completion)(BOOL) = ^(BOOL finished) {
@@ -403,14 +429,18 @@
 
 - (void)setMinHeight:(CGFloat)minHeight
 {
-    if (0 < minHeight && minHeight < _maxHeight) {
+    if (0 <= minHeight) {
         _minHeight = minHeight;
+		
+		if (_maxHeight < _minHeight) {
+			self.maxHeight = _minHeight;
+		}
     }
 }
 
 - (void)setMaxHeight:(CGFloat)maxHeight
 {
-    if (_minHeight < maxHeight) {
+    if (_minHeight <= maxHeight) {
         _maxHeight = maxHeight;
     }
 }
