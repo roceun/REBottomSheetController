@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'REBottomSheetController'
-  s.version          = '0.4.0'
+  s.version          = '0.5.0'
   s.summary          = 'REBottomSheetController is bottomSheet like map app, stock app.'
   s.homepage         = 'https://github.com/roceun/REBottomSheetController'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'

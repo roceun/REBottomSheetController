@@ -392,11 +392,9 @@
     switch (recognizer.state) {
         case UIGestureRecognizerStateBegan:
             self.shouldDragView = shouldDragViewDown || shouldDragViewUp;
-            
             if (_shouldDragView) {
                 [_bottomScrollView setContentOffset:CGPointZero animated:NO];
             }
-            _bottomScrollView.bounces = !_shouldDragView;
             
             break;
             
@@ -412,10 +410,6 @@
             
         case UIGestureRecognizerStateEnded:
             if (_shouldDragView) {
-                if (!isScrollDown) {
-                    _bottomScrollView.bounces = YES;
-                }
-                
 				[self animateViewWithHeight:(isScrollDown ? _minHeight : _maxHeight)];
             }
             break;
