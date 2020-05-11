@@ -9,6 +9,7 @@
 
 @interface REBottomSheetController ()
 
+@property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) UIView *topContentView;
 @property (nonatomic, strong) UIScrollView *bottomScrollView;
 @property (nonatomic, strong) UIButton *dimmedView;
@@ -46,6 +47,9 @@
     }
 	
     self.topCornerRadius = 12;
+	
+	self.topCornerShadowColor = nil;
+	self.topCornerShadowOpacity = 0;
     
     self.minHeight = 0;
     self.maxHeight = [UIScreen mainScreen].bounds.size.height / 2;
@@ -62,15 +66,20 @@
 
 - (void)dealloc
 {
-    for (UIView *view in self.view.subviews) {
+    for (UIView *view in _contentView.subviews) {
         [view removeFromSuperview];
     }
     
+	[_contentView removeFromSuperview];
     [_dimmedView removeFromSuperview];
     
+	self.contentView = nil;
     self.topContentView = nil;
     self.bottomScrollView = nil;
     self.dimmedView = nil;
+	
+	self.topCornerShadowColor = nil;
+	self.dimmedColor = nil;
 	
 	self.topConstraint = nil;
 	self.heightConstraint = nil;
@@ -120,7 +129,8 @@
 
 - (void)viewWillLayoutSubviews
 {
-    [self roundRectWithView:_topContentView];
+    [self roundRectWithView:_contentView];
+	[self shadowRectWithView:self.view];
 }
 
 - (void)initConstraints
@@ -142,8 +152,20 @@
 {
     NSMutableArray * const constraints = [NSMutableArray new];
 	
+	UIView * const contentView = [UIView new];
+	[self.view addSubview:contentView];
+	self.contentView = contentView;
+	
+	contentView.translatesAutoresizingMaskIntoConstraints = NO;
+	[constraints addObjectsFromArray:@[
+		[contentView.topAnchor constraintEqualToAnchor:contentView.superview.topAnchor],
+		[contentView.leftAnchor constraintEqualToAnchor:contentView.superview.leftAnchor],
+		[contentView.bottomAnchor constraintEqualToAnchor:contentView.superview.bottomAnchor],
+		[contentView.rightAnchor constraintEqualToAnchor:contentView.superview.rightAnchor],
+	]];
+	
 	UIView * const backColorView = [UIView new];
-	[self.view addSubview:backColorView];
+	[contentView addSubview:backColorView];
     
     self.topContentViewHeight = 0;
     UIView *topContentView = nil;
@@ -156,7 +178,7 @@
 		NSLog(@"Required methods! REBottomSheetControllerGetTopContentView, REBottonSheetViewControllerGetTopContentViewHeight");
 		return;
 	}
-    [self.view addSubview:topContentView];
+    [contentView addSubview:topContentView];
     self.topContentView = topContentView;
     
     topContentView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -175,7 +197,7 @@
     if (bottomScrollView) {
         bottomScrollView.scrollEnabled = NO;
         bottomScrollView.contentInset = UIEdgeInsetsMake(0, 0, _safeAreaBottom, 0);
-        [self.view addSubview:bottomScrollView];
+        [contentView addSubview:bottomScrollView];
         self.bottomScrollView = bottomScrollView;
         
         bottomScrollView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -203,17 +225,29 @@
     [NSLayoutConstraint activateConstraints:constraints];
 	
 	[topContentView layoutIfNeeded];
-	[self.view layoutIfNeeded];
+	[contentView layoutIfNeeded];
+}
+
+- (UIBezierPath *)besizerPathWithView:(UIView *)view
+{
+	return [UIBezierPath bezierPathWithRoundedRect:view.bounds
+								 byRoundingCorners:(UIRectCornerTopLeft | UIRectCornerTopRight)
+									   cornerRadii:CGSizeMake(_topCornerRadius, _topCornerRadius)];;
 }
 
 - (void)roundRectWithView:(UIView *)view
 {
-    UIBezierPath * const path = [UIBezierPath bezierPathWithRoundedRect:view.bounds
-                                                      byRoundingCorners:(UIRectCornerTopLeft | UIRectCornerTopRight)
-                                                            cornerRadii:CGSizeMake(_topCornerRadius, _topCornerRadius)];
     CAShapeLayer * const mask = [CAShapeLayer new];
-    mask.path = path.CGPath;
+    mask.path = [self besizerPathWithView:view].CGPath;
     view.layer.mask = mask;
+}
+
+- (void)shadowRectWithView:(UIView *)view
+{
+	view.layer.masksToBounds = NO;
+	view.layer.shadowPath = [self besizerPathWithView:view].CGPath;
+	view.layer.shadowColor = _topCornerShadowColor.CGColor;
+	view.layer.shadowOpacity = _topCornerShadowOpacity;
 }
 
 - (void)initDimmedView

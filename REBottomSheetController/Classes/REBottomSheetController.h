@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak, nullable) id<REBottomSheetDelegate> delegate;
 
 @property (nonatomic, assign) CGFloat topCornerRadius; // default value is 12
+@property (nonatomic, strong, nullable) UIColor *topCornerShadowColor; // default value is nil
+@property (nonatomic, assign) CGFloat topCornerShadowOpacity; // default value is 0
 
 @property (nonatomic, assign) CGFloat minHeight; // default value is 0
 @property (nonatomic, assign) CGFloat maxHeight; // default value is half of screen
