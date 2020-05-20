@@ -54,7 +54,7 @@
     self.minHeight = 0;
     self.maxHeight = [UIScreen mainScreen].bounds.size.height / 2;
     
-    self.bounceAnimationHeight = 20;
+    self.bounceAnimationHeight = 10;
     self.animationDuration = 0.3f;
     
     self.dimmedColor = nil;
@@ -62,6 +62,7 @@
     self.dimmedAlphaForMaxHeight = 1;
     
     self.shoudPanGesture = YES;
+	self.shouldAutoMoveAfterGestureEnded = YES;
 }
 
 - (void)dealloc
@@ -301,6 +302,13 @@
 	[self.view updateConstraintsIfNeeded];
 }
 
+- (void)notifyDragViewBegin
+{
+	if ([_delegate respondsToSelector:@selector(REBottomSheetController:dragViewBeginOffsetY:)]) {
+		[_delegate REBottomSheetController:self dragViewBeginOffsetY:_topConstraint.constant];
+	}
+}
+
 - (void)didChangedMinHeight
 {
     if ([_delegate respondsToSelector:@selector(REBottomSheetController:didChangedMinHeightOffsetY:)]) {
@@ -383,6 +391,24 @@
     }
 }
 
+- (void)gestureRecognizerStateEnded:(BOOL)isScrollDown withOffsetY:(CGFloat)offsetY
+{
+	if (_shouldAutoMoveAfterGestureEnded) {
+		[self animateViewWithHeight:(isScrollDown ? _minHeight : _maxHeight)];
+	}
+	else {
+		if (isScrollDown) {
+			if (offsetY > _screenHeight - _minHeight) {
+				[self animateViewWithHeight:_minHeight];
+			}
+		} else {
+			if (offsetY < _screenHeight - _maxHeight) {
+				[self animateViewWithHeight:_maxHeight];
+			}
+		}
+	}
+}
+
 // MARK: - panGesture
 
 - (void)panGestureRecognizer:(UIPanGestureRecognizer *)recognizer
@@ -390,20 +416,23 @@
     if (!_shoudPanGesture) {
         return;
     }
+	
+	CGFloat offsetY = _topConstraint.constant + [recognizer translationInView:self.view].y;
+	offsetY = MAX(offsetY, _screenHeight - _maxHeight - _bounceAnimationHeight);
     
     const BOOL isScrollDown = [recognizer velocityInView:self.view].y > 0;
     switch (recognizer.state) {
+		case UIGestureRecognizerStateBegan:
+			[self notifyDragViewBegin];
+			break;
+			
         case UIGestureRecognizerStateChanged:
-		{
-			CGFloat offsetY = _topConstraint.constant + [recognizer translationInView:self.view].y;
-            offsetY = MAX(offsetY, _screenHeight - _maxHeight - _bounceAnimationHeight);
-            
-            [self setContentViewFrameWithOffsetY:offsetY];
+			[self setContentViewFrameWithOffsetY:offsetY];
             [recognizer setTranslation:CGPointZero inView:self.view];
             break;
-		}
+			
         case UIGestureRecognizerStateEnded:
-			[self animateViewWithHeight:(isScrollDown ? _minHeight : _maxHeight)];
+			[self gestureRecognizerStateEnded:isScrollDown withOffsetY:offsetY];
             break;
             
         default:
@@ -422,21 +451,21 @@
     
     const BOOL shouldDragViewDown = isScrollDown && _bottomScrollView.contentOffset.y <= 0;
     const BOOL shouldDragViewUp = !isScrollDown && !isMaxHeight;
+	
+	CGFloat offsetY = _topConstraint.constant + [recognizer translationInView:self.view].y;
+	offsetY = MAX(offsetY, _screenHeight - _maxHeight - _bounceAnimationHeight);
     
     switch (recognizer.state) {
         case UIGestureRecognizerStateBegan:
             self.shouldDragView = shouldDragViewDown || shouldDragViewUp;
             if (_shouldDragView) {
+				[self notifyDragViewBegin];
                 [_bottomScrollView setContentOffset:CGPointZero animated:NO];
             }
-            
             break;
             
         case UIGestureRecognizerStateChanged:
             if (_shouldDragView) {
-				CGFloat offsetY = _topConstraint.constant + [recognizer translationInView:self.view].y;
-                offsetY = MAX(offsetY, _screenHeight - _maxHeight - _bounceAnimationHeight);
-                
                 [self setContentViewFrameWithOffsetY:offsetY];
                 [recognizer setTranslation:CGPointZero inView:self.view];
             }
@@ -444,7 +473,7 @@
             
         case UIGestureRecognizerStateEnded:
             if (_shouldDragView) {
-				[self animateViewWithHeight:(isScrollDown ? _minHeight : _maxHeight)];
+				[self gestureRecognizerStateEnded:isScrollDown withOffsetY:offsetY];
             }
             break;
             
