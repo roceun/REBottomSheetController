@@ -10,7 +10,9 @@
 
 #import <REBottomSheetController.h>
 
-@interface REViewController () <REBottomSheetDelegate, UITableViewDataSource>
+@interface REViewController () <REBottomSheetDelegate, UITableViewDelegate, UITableViewDataSource>
+
+@property (nonatomic, strong) REBottomSheetController *sheetController;
 
 @end
 
@@ -24,13 +26,15 @@
 	self.view.backgroundColor = UIColor.yellowColor;
 	
 	REBottomSheetController * const controller = [[REBottomSheetController alloc] init];
-	controller.maxHeight = 600;
+	controller.maxHeight = self.view.frame.size.height * 0.6f;
 	controller.minHeight = 150;
 	controller.delegate = self;
 	
 	[self addChildViewController:controller];
     [self.view addSubview:controller.view];
     [controller didMoveToParentViewController:self];
+	
+	self.sheetController = controller;
 }
 
 - (void)didReceiveMemoryWarning
@@ -60,7 +64,7 @@
     return handleView;
 }
 
-- (CGFloat)REBottonSheetViewControllerGetTopContentViewHeight:(REBottomSheetController *)viewController
+- (CGFloat)REBottomSheetViewControllerGetTopContentViewHeight:(REBottomSheetController *)viewController
 {
 	return 16;
 }
@@ -68,7 +72,7 @@
 - (UIScrollView *)REBottomSheetControllerGetBottomScrollView:(REBottomSheetController *)viewController
 {
 	UITableView *tableView = [UITableView new];
-//    tableView.delegate = self;
+    tableView.delegate = self;
     tableView.dataSource = self;
     return tableView;
 }
@@ -93,6 +97,13 @@
     cell.textLabel.text = [NSString stringWithFormat:@"%d", (int)indexPath.row];
     
     return cell;
+}
+
+// MARK: - UITableViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+	[_sheetController scrollViewDidScroll:scrollView];
 }
 
 @end

@@ -36,12 +36,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 // Gesture
-@property (nonatomic, assign) BOOL shoudPanGesture; // default value is YES
+@property (nonatomic, assign) BOOL shouldPanGesture; // default value is YES
 @property (nonatomic, assign) BOOL shouldAutoMoveAfterGestureEnded; // default value is YES;
 
 
 - (void)moveToMinHeight;
 - (void)moveToMaxHeight;
+
+
+// MARK: - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView;
 
 @end
 
@@ -53,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
 @required
 
 - (UIView *)REBottomSheetControllerGetTopContentView:(REBottomSheetController *)viewController;
-- (CGFloat)REBottonSheetViewControllerGetTopContentViewHeight:(REBottomSheetController *)viewController;
+- (CGFloat)REBottomSheetViewControllerGetTopContentViewHeight:(REBottomSheetController *)viewController;
 
 @optional
 

@@ -18,6 +18,7 @@
 @property (nonatomic, assign) CGFloat safeAreaBottom;
 
 @property (nonatomic, assign) BOOL shouldDragView;
+@property (nonatomic, assign) BOOL showsVerticalScrollIndicator;
 
 @property (nonatomic, strong) NSLayoutConstraint *topConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *heightConstraint;
@@ -28,56 +29,59 @@
 
 @end
 
+
+// MARK: -
+
 @implementation REBottomSheetController
 
 - (instancetype)init {
-    if (self = [super init]) {
-        [self initialize];
-    }
-    return self;
+	if (self = [super init]) {
+		[self initialize];
+	}
+	return self;
 }
 
 - (void)initialize
 {
 	self.screenHeight = [UIScreen mainScreen].bounds.size.height;
-    self.safeAreaBottom = 0;
-    if (@available(iOS 11.0, *)) {
-        UIWindow *window = UIApplication.sharedApplication.keyWindow;
-        self.safeAreaBottom = window.safeAreaInsets.bottom;
-    }
+	self.safeAreaBottom = 0;
+	if (@available(iOS 11.0, *)) {
+		UIWindow *window = UIApplication.sharedApplication.keyWindow;
+		self.safeAreaBottom = window.safeAreaInsets.bottom;
+	}
 	
-    self.topCornerRadius = 12;
+	self.topCornerRadius = 12;
 	
 	self.topCornerShadowColor = nil;
 	self.topCornerShadowOpacity = 0;
-    
-    self.minHeight = 0;
-    self.maxHeight = [UIScreen mainScreen].bounds.size.height / 2;
-    
-    self.bounceAnimationHeight = 10;
-    self.animationDuration = 0.3f;
-    
-    self.dimmedColor = nil;
-    self.dimmedAlphaForMinHeight = 0;
-    self.dimmedAlphaForMaxHeight = 1;
-    
-    self.shoudPanGesture = YES;
+	
+	self.minHeight = 0;
+	self.maxHeight = [UIScreen mainScreen].bounds.size.height / 2;
+	
+	self.bounceAnimationHeight = 10;
+	self.animationDuration = 0.3f;
+	
+	self.dimmedColor = nil;
+	self.dimmedAlphaForMinHeight = 0;
+	self.dimmedAlphaForMaxHeight = 1;
+	
+	self.shouldPanGesture = YES;
 	self.shouldAutoMoveAfterGestureEnded = YES;
 }
 
 - (void)dealloc
 {
-    for (UIView *view in _contentView.subviews) {
-        [view removeFromSuperview];
-    }
-    
+	for (UIView *view in _contentView.subviews) {
+		[view removeFromSuperview];
+	}
+	
 	[_contentView removeFromSuperview];
-    [_dimmedView removeFromSuperview];
-    
+	[_dimmedView removeFromSuperview];
+	
 	self.contentView = nil;
-    self.topContentView = nil;
-    self.bottomScrollView = nil;
-    self.dimmedView = nil;
+	self.topContentView = nil;
+	self.bottomScrollView = nil;
+	self.dimmedView = nil;
 	
 	self.topCornerShadowColor = nil;
 	self.dimmedColor = nil;
@@ -89,37 +93,37 @@
 }
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    
+	[super viewDidLoad];
+	// Do any additional setup after loading the view.
+	
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
-    
-    [self initDimmedView];
-    
+	[super viewDidAppear:animated];
+	
+	[self initDimmedView];
+	
 	[self initConstraints];
 	[self initSubviews];
 	
 	[self setContentViewFrameWithOffsetY:_screenHeight];
 	
-    if (_minHeight > 0) {
-        [self animateViewWithHeight:_minHeight];
-    }
-    else {
-        [self animateViewWithHeight:_maxHeight];
-    }
+	if (_minHeight > 0) {
+		[self animateViewWithHeight:_minHeight];
+	}
+	else {
+		[self animateViewWithHeight:_maxHeight];
+	}
 	
 	UIGestureRecognizer * const recognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureRecognizer:)];
-    [self.view addGestureRecognizer:recognizer];
+	[self.view addGestureRecognizer:recognizer];
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
-    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-
+	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+	
 	self.screenHeight = size.height;
 	[self setContentViewFrameWithOffsetY:_screenHeight - size.width + _topConstraint.constant];
 	[coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> _Nonnull context) {
@@ -130,7 +134,7 @@
 
 - (void)viewWillLayoutSubviews
 {
-    [self roundRectWithView:_contentView];
+	[self roundRectWithView:_contentView];
 	[self shadowRectWithView:self.view];
 }
 
@@ -151,7 +155,7 @@
 
 - (void)initSubviews
 {
-    NSMutableArray * const constraints = [NSMutableArray new];
+	NSMutableArray * const constraints = [NSMutableArray new];
 	
 	UIView * const contentView = [UIView new];
 	[self.view addSubview:contentView];
@@ -167,52 +171,54 @@
 	
 	UIView * const backColorView = [UIView new];
 	[contentView addSubview:backColorView];
-    
-    self.topContentViewHeight = 0;
-    UIView *topContentView = nil;
-    if ([_delegate respondsToSelector:@selector(REBottomSheetControllerGetTopContentView:)] &&
-        [_delegate respondsToSelector:@selector(REBottonSheetViewControllerGetTopContentViewHeight:)]) {
-        topContentView = [_delegate REBottomSheetControllerGetTopContentView:self];
-        self.topContentViewHeight = MAX(0, [_delegate REBottonSheetViewControllerGetTopContentViewHeight:self]);
-    }
+	
+	self.topContentViewHeight = 0;
+	UIView *topContentView = nil;
+	if ([_delegate respondsToSelector:@selector(REBottomSheetControllerGetTopContentView:)] &&
+		[_delegate respondsToSelector:@selector(REBottomSheetViewControllerGetTopContentViewHeight:)]) {
+		topContentView = [_delegate REBottomSheetControllerGetTopContentView:self];
+		self.topContentViewHeight = MAX(0, [_delegate REBottomSheetViewControllerGetTopContentViewHeight:self]);
+	}
 	else {
-		NSLog(@"Required methods! REBottomSheetControllerGetTopContentView, REBottonSheetViewControllerGetTopContentViewHeight");
+		NSLog(@"Required methods! REBottomSheetControllerGetTopContentView, REBottomSheetViewControllerGetTopContentViewHeight");
 		return;
 	}
-    [contentView addSubview:topContentView];
-    self.topContentView = topContentView;
-    
-    topContentView.translatesAutoresizingMaskIntoConstraints = NO;
-    [constraints addObjectsFromArray:@[
-        [topContentView.topAnchor constraintEqualToAnchor:topContentView.superview.topAnchor],
-        [topContentView.leftAnchor constraintEqualToAnchor:topContentView.superview.leftAnchor],
-        [topContentView.rightAnchor constraintEqualToAnchor:topContentView.superview.rightAnchor],
-        [topContentView.heightAnchor constraintEqualToConstant:_topContentViewHeight]
-    ]];
-    
-    UIScrollView *bottomScrollView = nil;
-    if ([_delegate respondsToSelector:@selector(REBottomSheetControllerGetBottomScrollView:)]) {
-        bottomScrollView = [_delegate REBottomSheetControllerGetBottomScrollView:self];
-    }
-    
-    if (bottomScrollView) {
-        bottomScrollView.scrollEnabled = NO;
-        bottomScrollView.contentInset = UIEdgeInsetsMake(0, 0, _safeAreaBottom, 0);
-        [contentView addSubview:bottomScrollView];
-        self.bottomScrollView = bottomScrollView;
-        
-        bottomScrollView.translatesAutoresizingMaskIntoConstraints = NO;
+	[contentView addSubview:topContentView];
+	self.topContentView = topContentView;
+	
+	topContentView.translatesAutoresizingMaskIntoConstraints = NO;
+	[constraints addObjectsFromArray:@[
+		[topContentView.topAnchor constraintEqualToAnchor:topContentView.superview.topAnchor],
+		[topContentView.leftAnchor constraintEqualToAnchor:topContentView.superview.leftAnchor],
+		[topContentView.rightAnchor constraintEqualToAnchor:topContentView.superview.rightAnchor],
+		[topContentView.heightAnchor constraintEqualToConstant:_topContentViewHeight]
+	]];
+	
+	
+	// bottomScrollView
+	UIScrollView *bottomScrollView = nil;
+	if ([_delegate respondsToSelector:@selector(REBottomSheetControllerGetBottomScrollView:)]) {
+		bottomScrollView = [_delegate REBottomSheetControllerGetBottomScrollView:self];
+	}
+	
+	if (bottomScrollView) {
+		bottomScrollView.contentInset = UIEdgeInsetsMake(0, 0, _safeAreaBottom, 0);
+		[contentView addSubview:bottomScrollView];
+		self.bottomScrollView = bottomScrollView;
+		
+		bottomScrollView.translatesAutoresizingMaskIntoConstraints = NO;
 		
 		self.bottomScrollViewConstraint = [bottomScrollView.heightAnchor constraintEqualToConstant:(_minHeight > 0 ? _minHeight : _maxHeight) - _topContentViewHeight];
-        [constraints addObjectsFromArray:@[
-            [bottomScrollView.topAnchor constraintEqualToAnchor:topContentView.bottomAnchor],
-            [bottomScrollView.leftAnchor constraintEqualToAnchor:bottomScrollView.superview.leftAnchor],
-            [bottomScrollView.rightAnchor constraintEqualToAnchor:bottomScrollView.superview.rightAnchor],
+		[constraints addObjectsFromArray:@[
+			[bottomScrollView.topAnchor constraintEqualToAnchor:topContentView.bottomAnchor],
+			[bottomScrollView.leftAnchor constraintEqualToAnchor:bottomScrollView.superview.leftAnchor],
+			[bottomScrollView.rightAnchor constraintEqualToAnchor:bottomScrollView.superview.rightAnchor],
 			_bottomScrollViewConstraint
-        ]];
-        
-        [bottomScrollView.panGestureRecognizer addTarget:self action:@selector(panGestureRecognizerForScrollView:)];
-    }
+		]];
+		
+		self.showsVerticalScrollIndicator = bottomScrollView.showsVerticalScrollIndicator;
+		[bottomScrollView.panGestureRecognizer addTarget:self action:@selector(panGestureRecognizerForScrollView:)];
+	}
 	
 	backColorView.backgroundColor = (bottomScrollView ?: topContentView).backgroundColor;
 	backColorView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -222,8 +228,8 @@
 		[backColorView.rightAnchor constraintEqualToAnchor:backColorView.superview.rightAnchor],
 		[backColorView.bottomAnchor constraintEqualToAnchor:backColorView.superview.bottomAnchor]
 	]];
-    
-    [NSLayoutConstraint activateConstraints:constraints];
+	
+	[NSLayoutConstraint activateConstraints:constraints];
 	
 	[topContentView layoutIfNeeded];
 	[contentView layoutIfNeeded];
@@ -238,9 +244,9 @@
 
 - (void)roundRectWithView:(UIView *)view
 {
-    CAShapeLayer * const mask = [CAShapeLayer new];
-    mask.path = [self besizerPathWithView:view].CGPath;
-    view.layer.mask = mask;
+	CAShapeLayer * const mask = [CAShapeLayer new];
+	mask.path = [self besizerPathWithView:view].CGPath;
+	view.layer.mask = mask;
 }
 
 - (void)shadowRectWithView:(UIView *)view
@@ -253,53 +259,54 @@
 
 - (void)initDimmedView
 {
-    if (_dimmedView || !_dimmedColor) {
-        return;
-    }
-    
-    UIButton * const dimmedView = [UIButton buttonWithType:UIButtonTypeCustom];
-    dimmedView.backgroundColor = [_dimmedColor colorWithAlphaComponent:_dimmedAlphaForMinHeight];
-    [dimmedView addTarget:self action:@selector(touchedDimmedView:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view.superview insertSubview:dimmedView belowSubview:self.view];
-    self.dimmedView = dimmedView;
-    
-    dimmedView.translatesAutoresizingMaskIntoConstraints = NO;
-    [NSLayoutConstraint activateConstraints:@[
-        [dimmedView.topAnchor constraintEqualToAnchor:dimmedView.superview.topAnchor],
-        [dimmedView.leftAnchor constraintEqualToAnchor:dimmedView.superview.leftAnchor],
-        [dimmedView.bottomAnchor constraintEqualToAnchor:dimmedView.superview.bottomAnchor],
-        [dimmedView.rightAnchor constraintEqualToAnchor:dimmedView.superview.rightAnchor]
-    ]];
+	if (_dimmedView || !_dimmedColor) {
+		return;
+	}
+	
+	UIButton * const dimmedView = [UIButton buttonWithType:UIButtonTypeCustom];
+	dimmedView.backgroundColor = [_dimmedColor colorWithAlphaComponent:_dimmedAlphaForMinHeight];
+	[dimmedView addTarget:self action:@selector(touchedDimmedView:) forControlEvents:UIControlEventTouchUpInside];
+	[self.view.superview insertSubview:dimmedView belowSubview:self.view];
+	self.dimmedView = dimmedView;
+	
+	dimmedView.translatesAutoresizingMaskIntoConstraints = NO;
+	[NSLayoutConstraint activateConstraints:@[
+		[dimmedView.topAnchor constraintEqualToAnchor:dimmedView.superview.topAnchor],
+		[dimmedView.leftAnchor constraintEqualToAnchor:dimmedView.superview.leftAnchor],
+		[dimmedView.bottomAnchor constraintEqualToAnchor:dimmedView.superview.bottomAnchor],
+		[dimmedView.rightAnchor constraintEqualToAnchor:dimmedView.superview.rightAnchor]
+	]];
 }
 
 - (void)setDimmedViewColorWithOffsetY:(CGFloat)offsetY
 {
-    if (!_dimmedView || !_dimmedColor) {
-        return;
-    }
-    
-    CGFloat currentHeight = _screenHeight - offsetY;
-    currentHeight = MAX(currentHeight, _minHeight);
-    currentHeight = MIN(currentHeight, _maxHeight);
-    
-    const CGFloat percent = (currentHeight - _minHeight) / (_maxHeight - _minHeight);
-    CGFloat currentAlpha = _dimmedAlphaForMaxHeight - _dimmedAlphaForMinHeight;
-    currentAlpha *= percent;
-    currentAlpha += _dimmedAlphaForMinHeight;
-    
-    _dimmedView.backgroundColor = [_dimmedColor colorWithAlphaComponent:currentAlpha];
+	if (!_dimmedView || !_dimmedColor) {
+		return;
+	}
+	
+	CGFloat currentHeight = _screenHeight - offsetY;
+	currentHeight = MAX(currentHeight, _minHeight);
+	currentHeight = MIN(currentHeight, _maxHeight);
+	
+	const CGFloat percent = (currentHeight - _minHeight) / (_maxHeight - _minHeight);
+	CGFloat currentAlpha = _dimmedAlphaForMaxHeight - _dimmedAlphaForMinHeight;
+	currentAlpha *= percent;
+	currentAlpha += _dimmedAlphaForMinHeight;
+	
+	_dimmedView.backgroundColor = [_dimmedColor colorWithAlphaComponent:currentAlpha];
 }
 
 - (void)setContentViewFrameWithOffsetY:(CGFloat)offsetY
 {
-    [self setDimmedViewColorWithOffsetY:offsetY];
-    
+	[self setDimmedViewColorWithOffsetY:offsetY];
+	
 	_topConstraint.constant = offsetY;
 	_heightConstraint.constant = _maxHeight + _bounceAnimationHeight;
 	
 	_bottomScrollViewConstraint.constant = MAX(_screenHeight - offsetY, (_minHeight > 0 ? _minHeight : _maxHeight)) - _topContentViewHeight;
 	
 	[self.view updateConstraintsIfNeeded];
+	[self.view setNeedsLayout];
 }
 
 - (void)notifyDragViewBegin
@@ -311,84 +318,83 @@
 
 - (void)didChangedMinHeight
 {
-    if ([_delegate respondsToSelector:@selector(REBottomSheetController:didChangedMinHeightOffsetY:)]) {
-        [_delegate REBottomSheetController:self didChangedMinHeightOffsetY:_topConstraint.constant];
-    }
+	if ([_delegate respondsToSelector:@selector(REBottomSheetController:didChangedMinHeightOffsetY:)]) {
+		[_delegate REBottomSheetController:self didChangedMinHeightOffsetY:_topConstraint.constant];
+	}
 }
 
 - (void)didChangedMaxHeight
 {
-    if ([_delegate respondsToSelector:@selector(REBottomSheetController:didChangedMaxHeightOffsetY:)]) {
-        [_delegate REBottomSheetController:self didChangedMaxHeightOffsetY:_topConstraint.constant];
-    }
+	if ([_delegate respondsToSelector:@selector(REBottomSheetController:didChangedMaxHeightOffsetY:)]) {
+		[_delegate REBottomSheetController:self didChangedMaxHeightOffsetY:_topConstraint.constant];
+	}
 }
 
 - (void)animateViewWithHeight:(CGFloat)height
 {
 	const CGFloat offsetY = _screenHeight - height;
-    if (_topConstraint.constant == offsetY) {
-        return;
-    }
-    
-    _bottomScrollView.scrollEnabled = (offsetY == _screenHeight - _maxHeight);
+	if (_topConstraint.constant == offsetY) {
+		return;
+	}
 	
-    const BOOL shouldAnimation = _animationDuration > 0;
-    
-    CGFloat bounceOffsetY = offsetY;
-    if (shouldAnimation && _bounceAnimationHeight > 0 &&
-        _topConstraint.constant >= _screenHeight - _maxHeight &&
-        _topConstraint.constant <= _screenHeight - _minHeight) {
-        if (_topConstraint.constant < offsetY) { // scroll down
-            bounceOffsetY += _bounceAnimationHeight;
-        }
-        else {
-            bounceOffsetY -= _bounceAnimationHeight;
-        }
-    }
-    
-    __weak __typeof(self) weakSelf = self;
-    void (^animations)(void) = ^{
-        __strong __typeof(self) strongSelf = weakSelf;
-        if (!strongSelf) {
-            return;
-        }
-        
-		[strongSelf setContentViewFrameWithOffsetY:bounceOffsetY];
-		[strongSelf.view.superview layoutIfNeeded];
-    };
-    
-    void (^completion)(BOOL) = ^(BOOL finished) {
-        __strong __typeof(self) strongSelf = weakSelf;
-        if (!strongSelf) {
-            return;
-        }
-        
-        if (bounceOffsetY == strongSelf.screenHeight - strongSelf.minHeight) {
-            [strongSelf didChangedMinHeight];
-        }
-        else if (bounceOffsetY == strongSelf.screenHeight - strongSelf.maxHeight) {
-            [strongSelf didChangedMaxHeight];
-        }
-        
-        if (shouldAnimation && bounceOffsetY != offsetY) {
-            [strongSelf animateViewWithHeight:strongSelf.screenHeight - offsetY];
+	if (height == _minHeight) {
+		_bottomScrollView.contentOffset = CGPointZero;
+	}
+	
+	const BOOL shouldAnimation = _animationDuration > 0;
+	
+	CGFloat bounceOffsetY = offsetY;
+	if (shouldAnimation && _bounceAnimationHeight > 0 &&
+		_topConstraint.constant >= _screenHeight - _maxHeight &&
+		_topConstraint.constant <= _screenHeight - _minHeight) {
+		if (_topConstraint.constant < offsetY) { // scroll down
+			bounceOffsetY += _bounceAnimationHeight;
+		}
+		else {
+			bounceOffsetY -= _bounceAnimationHeight;
+		}
+	}
+	
+	__weak __typeof(self) weakSelf = self;
+	void (^animations)(void) = ^{
+		__strong __typeof(self) strongSelf = weakSelf;
+		if (!strongSelf) {
+			return;
 		}
 		
-		if (!strongSelf.bottomScrollView.scrollEnabled) {
-			strongSelf.bottomScrollView.contentOffset = CGPointZero;
+		[strongSelf setContentViewFrameWithOffsetY:bounceOffsetY];
+		[strongSelf.view.superview layoutIfNeeded];
+	};
+	
+	void (^completion)(BOOL) = ^(BOOL finished) {
+		__strong __typeof(self) strongSelf = weakSelf;
+		if (!strongSelf) {
+			return;
+		}
+		
+		if (shouldAnimation && bounceOffsetY != offsetY) {
+			[strongSelf animateViewWithHeight:strongSelf.screenHeight - offsetY];
+		}
+		else {
+			if (bounceOffsetY == strongSelf.screenHeight - strongSelf.minHeight) {
+				[strongSelf didChangedMinHeight];
+			}
+			else if (bounceOffsetY == strongSelf.screenHeight - strongSelf.maxHeight) {
+				[strongSelf didChangedMaxHeight];
+			}
 		}
 	};
-    
+	
 	[self.view.superview layoutIfNeeded];
-    if (shouldAnimation) {
-        [UIView animateWithDuration:_animationDuration
-                         animations:animations
-                         completion:completion];
-    }
-    else {
-        animations();
-        completion(YES);
-    }
+	if (shouldAnimation) {
+		[UIView animateWithDuration:_animationDuration
+						 animations:animations
+						 completion:completion];
+	}
+	else {
+		animations();
+		completion(YES);
+	}
 }
 
 - (void)gestureRecognizerStateEnded:(BOOL)isScrollDown withOffsetY:(CGFloat)offsetY
@@ -413,98 +419,103 @@
 
 - (void)panGestureRecognizer:(UIPanGestureRecognizer *)recognizer
 {
-    if (!_shoudPanGesture) {
-        return;
-    }
+	if (!_shouldPanGesture) {
+		return;
+	}
 	
 	CGFloat offsetY = _topConstraint.constant + [recognizer translationInView:self.view].y;
 	offsetY = MAX(offsetY, _screenHeight - _maxHeight - _bounceAnimationHeight);
-    
-    const BOOL isScrollDown = [recognizer velocityInView:self.view].y > 0;
-    switch (recognizer.state) {
+	
+	const BOOL isScrollDown = [recognizer velocityInView:self.view].y > 0;
+	switch (recognizer.state) {
 		case UIGestureRecognizerStateBegan:
 			[self notifyDragViewBegin];
 			break;
 			
-        case UIGestureRecognizerStateChanged:
+		case UIGestureRecognizerStateChanged:
 			[self setContentViewFrameWithOffsetY:offsetY];
-            [recognizer setTranslation:CGPointZero inView:self.view];
-            break;
+			[recognizer setTranslation:CGPointZero inView:self.view];
+			break;
 			
-        case UIGestureRecognizerStateEnded:
+		case UIGestureRecognizerStateEnded:
 			[self gestureRecognizerStateEnded:isScrollDown withOffsetY:offsetY];
-            break;
-            
-        default:
-            break;
-    }
+			break;
+			
+		default:
+			break;
+	}
 }
 
 - (void)panGestureRecognizerForScrollView:(UIPanGestureRecognizer *)recognizer
 {
-    if (!_shoudPanGesture) {
-        return;
-    }
-    
-    const BOOL isMaxHeight = _topConstraint.constant <= _screenHeight - _maxHeight;
-    const BOOL isScrollDown = [recognizer velocityInView:self.view].y > 0;
-    
-    const BOOL shouldDragViewDown = isScrollDown && _bottomScrollView.contentOffset.y <= 0;
-    const BOOL shouldDragViewUp = !isScrollDown && !isMaxHeight;
+	if (!_shouldPanGesture) {
+		return;
+	}
+	
+	const BOOL isMaxHeight = _topConstraint.constant <= _screenHeight - _maxHeight;
+	const BOOL isScrollDown = [recognizer velocityInView:self.view].y > 0;
+	
+	const BOOL shouldDragViewDown = isScrollDown && _bottomScrollView.contentOffset.y <= 0;
+	const BOOL shouldDragViewUp = !isScrollDown && !isMaxHeight;
 	
 	CGFloat offsetY = _topConstraint.constant + [recognizer translationInView:self.view].y;
 	offsetY = MAX(offsetY, _screenHeight - _maxHeight - _bounceAnimationHeight);
-    
-    switch (recognizer.state) {
-        case UIGestureRecognizerStateBegan:
-            self.shouldDragView = shouldDragViewDown || shouldDragViewUp;
-            if (_shouldDragView) {
+	
+	switch (recognizer.state) {
+		case UIGestureRecognizerStateBegan:
+			self.shouldDragView = NO;
+			_bottomScrollView.showsVerticalScrollIndicator = _showsVerticalScrollIndicator;
+			break;
+			
+		case UIGestureRecognizerStateChanged:
+		{
+			if (!_shouldDragView && (shouldDragViewDown || shouldDragViewUp)) {
 				[self notifyDragViewBegin];
-                [_bottomScrollView setContentOffset:CGPointZero animated:NO];
-            }
-            break;
-            
-        case UIGestureRecognizerStateChanged:
-            if (_shouldDragView) {
-                [self setContentViewFrameWithOffsetY:offsetY];
-                [recognizer setTranslation:CGPointZero inView:self.view];
-            }
-            break;
-            
-        case UIGestureRecognizerStateEnded:
-            if (_shouldDragView) {
+				self.shouldDragView = YES;
+				
+				self.showsVerticalScrollIndicator = _bottomScrollView.showsVerticalScrollIndicator;
+				_bottomScrollView.showsVerticalScrollIndicator = NO;
+			}
+			if (_shouldDragView) {
+				[self setContentViewFrameWithOffsetY:offsetY];
+				[recognizer setTranslation:CGPointZero inView:self.view];
+			}
+			break;
+		}
+		case UIGestureRecognizerStateEnded:
+			if (_shouldDragView) {
 				[self gestureRecognizerStateEnded:isScrollDown withOffsetY:offsetY];
-            }
-            break;
-            
-        default:
-            break;
-    }
+			}
+			break;
+			
+		default:
+			break;
+	}
 }
 
 // MARK: - Properties
 
 - (void)setMinHeight:(CGFloat)minHeight
 {
-    if (0 <= minHeight) {
-        _minHeight = minHeight;
+	if (0 <= minHeight) {
+		_minHeight = minHeight;
 		
 		if (_maxHeight < _minHeight) {
 			self.maxHeight = _minHeight;
 		}
-    }
+	}
 }
 
 - (void)setMaxHeight:(CGFloat)maxHeight
 {
-    if (_minHeight <= maxHeight) {
-        _maxHeight = maxHeight;
-    }
+	if (_minHeight <= maxHeight) {
+		_maxHeight = maxHeight;
+	}
 }
 
 - (void)setBounceAnimationHeight:(CGFloat)bounceAnimationHeight
 {
-    _bounceAnimationHeight = MAX(0, bounceAnimationHeight);
+	_bounceAnimationHeight = MAX(0, bounceAnimationHeight);
 }
 
 - (void)setAnimationDuration:(CGFloat)animationDuration
@@ -514,38 +525,47 @@
 
 - (void)setDimmedAlphaForMinHeight:(CGFloat)dimmedAlphaForMinHeight
 {
-    if (0 <= dimmedAlphaForMinHeight && dimmedAlphaForMinHeight <= _dimmedAlphaForMaxHeight) {
-        _dimmedAlphaForMinHeight = dimmedAlphaForMinHeight;
-    }
+	if (0 <= dimmedAlphaForMinHeight && dimmedAlphaForMinHeight <= _dimmedAlphaForMaxHeight) {
+		_dimmedAlphaForMinHeight = dimmedAlphaForMinHeight;
+	}
 }
 
 - (void)setDimmedAlphaForMaxHeight:(CGFloat)dimmedAlphaForMaxHeight
 {
-    if (_dimmedAlphaForMinHeight <= dimmedAlphaForMaxHeight && dimmedAlphaForMaxHeight <= 1) {
-        _dimmedAlphaForMaxHeight = dimmedAlphaForMaxHeight;
-    }
+	if (_dimmedAlphaForMinHeight <= dimmedAlphaForMaxHeight && dimmedAlphaForMaxHeight <= 1) {
+		_dimmedAlphaForMaxHeight = dimmedAlphaForMaxHeight;
+	}
 }
 
 // MARK: - Actions
 
 - (void)touchedDimmedView:(UIButton *)button
 {
-    if ([_delegate respondsToSelector:@selector(REBottomSheetControllerDidTouchDimmedView:)]) {
-        [_delegate REBottomSheetControllerDidTouchDimmedView:self];
-    }
+	if ([_delegate respondsToSelector:@selector(REBottomSheetControllerDidTouchDimmedView:)]) {
+		[_delegate REBottomSheetControllerDidTouchDimmedView:self];
+	}
 }
 
 // MARK: - Public Methods
 
 - (void)moveToMinHeight
 {
-    [self animateViewWithHeight:_minHeight];
+	[self animateViewWithHeight:_minHeight];
 }
 
 - (void)moveToMaxHeight
 {
-    [self animateViewWithHeight:_maxHeight];
+	[self animateViewWithHeight:_maxHeight];
+}
+
+// MARK: - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+	if (_shouldDragView ||
+		_topConstraint.constant == _screenHeight - _minHeight) {
+		scrollView.contentOffset = CGPointZero;
+	}
 }
 
 @end
-
