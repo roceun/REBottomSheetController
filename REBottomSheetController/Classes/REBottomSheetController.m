@@ -562,6 +562,10 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+	if (![_bottomScrollView isEqual:scrollView]) {
+		return;
+	}
+	
 	if (_shouldDragView ||
 		_topConstraint.constant == _screenHeight - _minHeight) {
 		scrollView.contentOffset = CGPointZero;

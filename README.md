@@ -11,6 +11,8 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 하단에서 올라오는 bottom sheet 기능을 구현한 컨트롤러 입니다.
 
+![sample](sample.gif)
+
 ### 주요 특징
 
 * 상단에는 UIView를 필수로 표시해야 하고, 하단에는 UIScrollView를 선택적으로 표시할 수 있습니다. 
